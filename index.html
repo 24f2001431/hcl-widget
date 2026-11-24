@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HCL Training Command Centre</title>
+<style>
+:root{--bg:#f6f5ef;--card:#fffefa;--ink:#26352d;--muted:#778278;--green:#315b45;--sage:#dce9dc;--gold:#d9b76b;--line:#e7e6dc;--pink:#f4e5df}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}
+.wrap{max-width:980px;margin:auto;padding:22px 16px 34px}.hero{background:linear-gradient(130deg,#254b39,#52765b);color:#fff;border-radius:22px;padding:24px;position:relative;overflow:hidden}
+.hero:after{content:"✳";position:absolute;right:22px;top:-30px;font-size:150px;color:#ffffff12}
+.eyebrow{text-transform:uppercase;letter-spacing:2px;font-size:10px;color:#d8e5d9;font-weight:700}.hero h1{font-size:27px;line-height:1.15;margin:8px 0}.hero p{color:#e0e9df;margin:0;max-width:600px}
+.countdown{display:flex;gap:10px;align-items:baseline;margin-top:18px}.countdown strong{font-size:34px;line-height:1}.countdown span{color:#e0e9df;font-size:12px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}.stat,.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:15px}.stat .num{font-size:25px;font-weight:750;letter-spacing:-1px}.stat .lab{font-size:11px;color:var(--muted);margin-top:2px}
+.progressbox{margin-top:14px}.progress-head{display:flex;justify-content:space-between;gap:10px;font-size:12px;color:#e8f0e8;margin-bottom:8px}.track{height:8px;border-radius:20px;background:#ffffff30;overflow:hidden}.fill{height:100%;width:0;background:#e6c77c;border-radius:20px;transition:width .2s}
+.sectionhead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:24px 2px 10px}.sectionhead h2{font-size:16px;margin:0}.sub{color:var(--muted);font-size:11px}
+.layout{display:grid;grid-template-columns:1.2fr .8fr;gap:12px}.panel h3{font-size:14px;margin:0 0 12px}.monthnav{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.monthnav button,.btn{border:1px solid var(--line);background:#fffefa;color:var(--ink);border-radius:9px;padding:7px 10px;cursor:pointer;font:inherit}.monthnav button{font-size:16px}.monthname{font-weight:700}
+.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}.dow{text-align:center;color:var(--muted);font-size:10px;padding:4px 0}.day{min-height:48px;border:1px solid transparent;border-radius:10px;background:#f7f7f1;padding:5px 2px;text-align:center;position:relative;font-size:12px}.day .dot{display:block;width:5px;height:5px;border-radius:50%;background:#c7c9bd;margin:3px auto 0}.day.training{background:#edf3eb;border-color:#dce8d9}.day.done{background:#dcebdc;border-color:#c3d9c3}.day.done .dot{background:#3d7950}.day.today{outline:2px solid var(--gold);outline-offset:1px}.day.selected{background:#315b45;color:white}.day.selected .dot{background:#f0d58c}.day.off{color:#c0c4bb}.legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px;color:var(--muted);font-size:10px}.key{display:inline-flex;align-items:center;gap:5px}.swatch{width:8px;height:8px;border-radius:3px;background:#edf3eb}.swatch.done{background:#a9c9aa}.swatch.today{background:#e3c36f}
+.session{display:flex;flex-direction:column;gap:9px}.sessiontop{display:flex;justify-content:space-between;align-items:center}.tag{font-size:10px;padding:4px 8px;border-radius:30px;background:var(--sage);color:var(--green);font-weight:700}.sessiondate{font-size:20px;font-weight:750}.sessionmeta{font-size:11px;color:var(--muted)}.checklist{display:grid;gap:8px;margin:4px 0}.checkrow{display:flex;align-items:center;gap:8px;font-size:12px}.checkrow input{accent-color:var(--green);width:15px;height:15px}.note{width:100%;min-height:82px;border:1px solid var(--line);border-radius:10px;padding:10px;font:inherit;font-size:12px;resize:vertical;background:#fffefa;color:var(--ink)}
+.actions{display:flex;gap:8px;flex-wrap:wrap}.btn.primary{background:var(--green);color:white;border-color:var(--green)}.btn:disabled{opacity:.45;cursor:not-allowed}
+.weeks{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.week{border:1px solid var(--line);border-radius:12px;padding:11px;background:#fffefa}.weektop{display:flex;justify-content:space-between;font-weight:700;font-size:12px}.week small{display:block;color:var(--muted);font-size:10px;margin:4px 0 8px}.mini-track{height:5px;background:#eeeee6;border-radius:10px;overflow:hidden}.mini-track span{display:block;height:100%;background:#79a17e}
+.tip{background:#f5efe0;border:1px solid #eee2c5;border-radius:14px;padding:13px;font-size:12px;color:#665638}.tip strong{display:block;margin-bottom:4px;color:#574723}
+.footer{text-align:center;color:var(--muted);font-size:10px;margin-top:20px}
+@media(max-width:700px){.stats{grid-template-columns:repeat(2,1fr)}.layout{grid-template-columns:1fr}.weeks{grid-template-columns:repeat(2,1fr)}.hero h1{font-size:23px}.day{min-height:42px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <div class="eyebrow">Panimalar Engineering College · HCL Training</div>
+    <h1>Your training, one day at a time.</h1>
+    <p>40 working days. 9 weeks. Keep showing up — the progress will take care of itself.</p>
+    <div class="countdown"><strong id="daysLeft">—</strong><span>calendar days until the final training date<br><b>13 January 2027</b></span></div>
+    <div class="progressbox"><div class="progress-head"><span id="progressLabel">Training progress</span><b id="percent">0%</b></div><div class="track"><div class="fill" id="progressFill"></div></div></div>
+  </header>
+
+  <section class="stats">
+    <div class="stat"><div class="num" id="completed">0</div><div class="lab">Training days completed</div></div>
+    <div class="stat"><div class="num" id="remaining">40</div><div class="lab">Working days remaining</div></div>
+    <div class="stat"><div class="num" id="total">40</div><div class="lab">Total scheduled days</div></div>
+    <div class="stat"><div class="num" id="nextDate">—</div><div class="lab">Next training day</div></div>
+  </section>
+
+  <div class="sectionhead"><h2>Training calendar</h2><span class="sub">Tap any scheduled date to update it</span></div>
+  <div class="layout">
+    <section class="panel">
+      <div class="monthnav"><button id="prev" aria-label="Previous month">‹</button><div class="monthname" id="monthName"></div><button id="next" aria-label="Next month">›</button></div>
+      <div class="calendar" id="calendar"></div>
+      <div class="legend"><span class="key"><i class="swatch"></i> Training day</span><span class="key"><i class="swatch done"></i> Completed</span><span class="key"><i class="swatch today"></i> Today</span></div>
+    </section>
+    <section class="panel session">
+      <div class="sessiontop"><h3>Selected training day</h3><span class="tag" id="statusTag">UP NEXT</span></div>
+      <div class="sessiondate" id="selectedDate">Choose a date</div>
+      <div class="sessionmeta" id="selectedMeta">Select a green date in the calendar.</div>
+      <div class="checklist" id="checklist">
+        <label class="checkrow"><input type="checkbox" data-task="attendance"> Attendance / check-in</label>
+        <label class="checkrow"><input type="checkbox" data-task="learn"> Learn the concepts</label>
+        <label class="checkrow"><input type="checkbox" data-task="practice"> Hands-on practice / task</label>
+        <label class="checkrow"><input type="checkbox" data-task="notes"> Save notes and key commands</label>
+        <label class="checkrow"><input type="checkbox" data-task="doubts"> Clear doubts / ask questions</label>
+      </div>
+      <textarea class="note" id="dayNote" placeholder="Add today's topics, tasks, links, doubts or a tiny win…"></textarea>
+      <div class="actions"><button class="btn primary" id="markDone">Mark day completed ✓</button><button class="btn" id="undo">Undo completion</button></div>
+      <div class="sub" id="saveHint">Your changes save automatically in this browser.</div>
+    </section>
+  </div>
+
+  <div class="sectionhead"><h2>Week-by-week progress</h2><span class="sub">Based on the college schedule</span></div>
+  <section class="panel"><div class="weeks" id="weeks"></div></section>
+
+  <div class="sectionhead"><h2>Make each training day count</h2></div>
+  <div class="tip"><strong>A simple daily routine</strong>
+    1. Before the session: check the topic and write down one question.<br>
+    2. During training: participate, practise, and note important steps or commands.<br>
+    3. After training: spend 10–15 minutes revising and write a 3-line summary.<br>
+    4. Before leaving the day: tick the checklist and mark the date complete only when the training day is finished.
+  </div>
+  <div class="footer">Your HCL chapter · 12 Oct 2026 — 13 Jan 2027</div>
+</div>
+<script>
+const schedule=[
+ {w:1,start:'2026-10-12',end:'2026-10-16',n:5},
+ {w:2,start:'2026-10-21',end:'2026-10-23',n:3},
+ {w:3,start:'2026-11-23',end:'2026-11-27',n:5},
+ {w:4,start:'2026-11-30',end:'2026-12-04',n:5},
+ {w:5,start:'2026-12-07',end:'2026-12-11',n:5},
+ {w:6,start:'2026-12-14',end:'2026-12-18',n:5},
+ {w:7,start:'2026-12-21',end:'2026-12-24',n:4},
+ {w:8,start:'2027-01-04',end:'2027-01-08',n:5},
+ {w:9,start:'2027-01-11',end:'2027-01-13',n:3}
+];
+const iso=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+const parse=s=>new Date(s+'T12:00:00');
+const all=[];
+schedule.forEach(week=>{let d=parse(week.start),end=parse(week.end);while(d<=end){all.push({date:iso(d),week:week.w});d.setDate(d.getDate()+1)}});
+const storeKey='hcl-training-command-centre-v1';
+let saved={};try{saved=JSON.parse(localStorage.getItem(storeKey)||'{}')}catch(e){}
+let selected=all.find(x=>x.date===iso(new Date()))?.date||all[0].date;
+let view=parse(selected);view.setDate(1);
+const today=iso(new Date());
+const fmt=s=>parse(s).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+const short=s=>parse(s).toLocaleDateString('en-IN',{day:'numeric',month:'short'});
+const training=new Set(all.map(x=>x.date));
+function persist(){localStorage.setItem(storeKey,JSON.stringify(saved));renderAll()}
+function isDone(d){return !!saved[d]?.done}
+function renderStats(){
+ const done=all.filter(x=>isDone(x.date)).length,remaining=40-done;
+ const pct=Math.round(done/40*100);
+ document.getElementById('completed').textContent=done;
+ document.getElementById('remaining').textContent=remaining;
+ document.getElementById('total').textContent=40;
+ document.getElementById('percent').textContent=pct+'%';
+ document.getElementById('progressFill').style.width=pct+'%';
+ document.getElementById('progressLabel').textContent=`${done} of 40 working days completed`;
+ const diff=Math.max(0,Math.ceil((parse('2027-01-13')-parse(today))/86400000));
+ document.getElementById('daysLeft').textContent=diff;
+ const next=all.find(x=>x.date>=today&&!isDone(x.date));
+ document.getElementById('nextDate').textContent=next?short(next.date):'All done!';
+}
+function renderCalendar(){
+ const y=view.getFullYear(),m=view.getMonth();
+ document.getElementById('monthName').textContent=view.toLocaleDateString('en-IN',{month:'long',year:'numeric'});
+ const cal=document.getElementById('calendar');cal.innerHTML='';
+ ['M','T','W','T','F','S','S'].forEach(x=>{let e=document.createElement('div');e.className='dow';e.textContent=x;cal.append(e)});
+ let first=new Date(y,m,1),offset=(first.getDay()+6)%7;
+ for(let i=0;i<offset;i++){let e=document.createElement('div');cal.append(e)}
+ const count=new Date(y,m+1,0).getDate();
+ for(let n=1;n<=count;n++){
+  let d=new Date(y,m,n),key=iso(d),e=document.createElement('button');e.className='day';e.type='button';
+  if(training.has(key))e.classList.add('training');
+  if(isDone(key))e.classList.add('done');
+  if(key===today)e.classList.add('today');
+  if(key===selected)e.classList.add('selected');
+  if(!training.has(key))e.classList.add('off');
+  e.innerHTML=`${n}${training.has(key)?'<span class="dot"></span>':''}`;
+  if(training.has(key)){e.title='Training day — tap to view';e.addEventListener('click',()=>{selected=key;renderAll()})}
+  cal.append(e);
+ }
+}
+function renderSelected(){
+ const item=all.find(x=>x.date===selected);if(!item)return;
+ const done=isDone(selected),data=saved[selected]||{};
+ document.getElementById('selectedDate').textContent=fmt(selected);
+ document.getElementById('selectedMeta').textContent=`Week ${item.week} · ${done?'Completed':selected<today?'Past training day — update if needed':selected===today?'Today · training day':'Scheduled training day'}`;
+ document.getElementById('statusTag').textContent=done?'COMPLETED':selected===today?'TODAY':selected<today?'PAST DAY':'UP NEXT';
+ document.querySelectorAll('[data-task]').forEach(c=>c.checked=!!data.tasks?.[c.dataset.task]);
+ document.getElementById('dayNote').value=data.note||'';
+ document.getElementById('markDone').disabled=done;
+ document.getElementById('undo').disabled=!done;
+}
+function renderWeeks(){
+ const root=document.getElementById('weeks');root.innerHTML='';
+ schedule.forEach(w=>{
+  const days=all.filter(x=>x.week===w.w),done=days.filter(x=>isDone(x.date)).length;
+  const el=document.createElement('div');el.className='week';
+  el.innerHTML=`<div class="weektop"><span>Week ${w.w}</span><span>${done}/${w.n}</span></div><small>${short(w.start)} – ${short(w.end)}</small><div class="mini-track"><span style="width:${done/w.n*100}%"></span></div>`;
+  root.append(el);
+ });
+}
+function renderAll(){renderStats();renderCalendar();renderSelected();renderWeeks()}
+document.getElementById('prev').onclick=()=>{view.setMonth(view.getMonth()-1);renderCalendar()};
+document.getElementById('next').onclick=()=>{view.setMonth(view.getMonth()+1);renderCalendar()};
+document.getElementById('markDone').onclick=()=>{let d=saved[selected]||{};d.done=true;saved[selected]=d;persist()};
+document.getElementById('undo').onclick=()=>{let d=saved[selected]||{};d.done=false;saved[selected]=d;persist()};
+document.querySelectorAll('[data-task]').forEach(c=>c.addEventListener('change',()=>{let d=saved[selected]||{};d.tasks=d.tasks||{};d.tasks[c.dataset.task]=c.checked;saved[selected]=d;localStorage.setItem(storeKey,JSON.stringify(saved))}));
+document.getElementById('dayNote').addEventListener('input',e=>{let d=saved[selected]||{};d.note=e.target.value;saved[selected]=d;localStorage.setItem(storeKey,JSON.stringify(saved))});
+renderAll();
+</script>
+</body></html>
